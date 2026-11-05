@@ -4,6 +4,7 @@
 ![.NET](https://img.shields.io/badge/.NET-8.0-purple?style=for-the-badge&logo=dotnet)
 ![QuestPDF](https://img.shields.io/badge/Llibreria-QuestPDF-blue?style=for-the-badge)
 ![WPF](https://img.shields.io/badge/UI-WPF-b02010?style=for-the-badge)
+![Docker](https://img.shields.io/badge/Docker-MariaDB-2496ED?style=for-the-badge&logo=docker)
 
 Una aplicació d'escriptori **WPF** dissenyada per generar informes visuals detallats de Pokémon en format PDF utilitzant la potència de **QuestPDF**. 
 
@@ -38,7 +39,7 @@ L'aplicació es connecta a una base de dades MySQL per obtenir informació detal
 
 ---
 
-## 🛠️ Tecnologies Utilitzades
+## 🛠️ Tecnologías Utilitzades
 
 | Tecnologia | Ús |
 | :--- | :--- |
@@ -48,10 +49,90 @@ L'aplicació es connecta a una base de dades MySQL per obtenir informació detal
 | **Entity Framework Core** | ORM per a l'accés a dades. |
 | **MySQL / MariaDB** | Base de dades relacional. |
 | **WebView2** | Component per visualitzar el PDF a l'app. |
+| **Docker** | Contenidor de MariaDB per la base de dades. |
+
+---
+
+## 🐳 Base de Dades con Docker
+
+El proyecto incluye un `docker-compose.yml` para levantar una base de datos MariaDB lista para usar con los datos de Pokémon ya cargados.
+
+### Requisitos previos
+- [Docker](https://www.docker.com/) y [Docker Compose](https://docs.docker.com/compose/) instalados.
+
+### Levantar la base de datos
+
+Desde la raíz del proyecto, ejecuta:
+
+```bash
+docker-compose up -d
+```
+
+Esto iniciará:
+- **Servicio:** `db` (MariaDB 10.4)
+- **Puerto:** `3306:3306` (accesible desde `localhost`)
+- **Base de datos:** `pokemon`
+- **Usuario:** `root` (sin contraseña)
+- **Dump inicial:** Se carga automáticamente desde `dump-pokedex-original.sql`
+
+### Verificar que está corriendo
+
+```bash
+docker-compose ps
+```
+
+O conectarte directamente:
+
+```bash
+docker exec -it pokeapp_mariadb mysql -u root pokemon
+```
+
+### Detener y eliminar
+
+```bash
+docker-compose down
+```
+
+> ⚠️ **Nota:** Si usas `docker-compose down -v`, se eliminarán los datos persistidos de la base de datos.
+
+---
+
+## 🔗 Conectar la aplicación a la BD en Docker
+
+La cadena de conexión en `AppDbContext.cs` ya está configurada para apuntar a `localhost:3306`:
+
+```csharp
+server=localhost;database=pokemon;port=3306;uid=root
+```
+
+Esto significa que, una vez levantado el contenedor Docker, la aplicación WPF podrá conectarse directamente sin cambios de configuración.
 
 ---
 
 ## 🚀 Instal·lació i Posada en Marxa
+
+### Opción 1: Con Docker (recomendado)
+
+1.  **Clonar el repositori:**
+    ```bash
+    git clone https://github.com/kuro-spm/DI_P3_PokeReport.git
+    ```
+
+2.  **Levantar la base de datos con Docker:**
+    ```bash
+    docker-compose up -d
+    ```
+
+3.  **Restaurar Dependències:**
+    Obre la solució a Visual Studio i deixa que es restaurin els paquets NuGet:
+    * `QuestPDF`
+    * `Microsoft.EntityFrameworkCore`
+    * `Pomelo.EntityFrameworkCore.MySql` (o similar)
+
+4.  **Executar:**
+    Prem **F5**. La primera vegada veuràs la barra de progrés mentre es descarreguen les imatges dels Pokémon.
+
+### Opción 2: Sin Docker (BD local)
 
 1.  **Clonar el repositori:**
     ```bash
@@ -63,13 +144,46 @@ L'aplicació es connecta a una base de dades MySQL per obtenir informació detal
     * Verifica la cadena de connexió (`connection string`) a `AppDbContext.cs` o `InvoiceDocumentDataSource.cs`.
 
 3.  **Restaurar Dependències:**
-    Obre la solució a Visual Studio i deixa que es restaurin els paquets NuGet:
-    * `QuestPDF`
-    * `Microsoft.EntityFrameworkCore`
-    * `Pomelo.EntityFrameworkCore.MySql` (o similar)
+    Obre la solució a Visual Studio i deixa que es restaurin els paquets NuGet.
 
 4.  **Executar:**
-    Prem **F5**. La primera vegada veuràs la barra de progrés mentre es descarreguen les imatges dels Pokémon.
+    Prem **F5**.
+
+---
+
+## 🧪 Cómo probar la app
+
+### 1. Verificar que Docker está corriendo
+```bash
+docker-compose ps
+```
+Deberías ver el contenedor `pokeapp_mariadb` en estado `Up`.
+
+### 2. Verificar la conexión a la base de datos
+```bash
+docker exec -it pokeapp_mariadb mysql -u root pokemon -e "SHOW TABLES;"
+```
+Deberías ver tablas como `pokemon`, `types`, `base_stats`, etc.
+
+### 3. Ejecutar la aplicación
+- Abre `PokeReport_Sara.slnx` en Visual Studio 2022
+- Asegúrate de que el proyecto de inicio es `PokeReport_Sara`
+- Presiona **F5** (o clic en "Iniciar")
+
+### 4. Qué esperar al ejecutar
+1. Aparecerá una pantalla de carga con barra de progreso
+2. La app descargará las imágenes de los primeros 9 Pokémon (se guardan en `/Images`)
+3. Se generará un archivo `invoice.pdf` en la carpeta del ejecutable
+4. Se abrirá el visor de PDF integrado (WebView2) mostrando el informe
+
+### 5. Solución de problemas comunes
+
+| Problema | Solución |
+| :--- | :--- |
+| Error de conexión a BD | Asegúrate de que `docker-compose up -d` esté corriendo |
+| Imágenes no descargan | Verifica conexión a internet (descarga de pokemon.com) |
+| PDF no se genera | Revisa que QuestPDF tenga licencia Community configurada |
+| Error de NuGet | Limpia la solución y restaura paquetes (`dotnet restore`) |
 
 ---
 
@@ -89,4 +203,3 @@ L'arquitectura separa clarament la lògica de la vista de la generació del docu
 **Sara Prats Morales**
 * [LinkedIn](https://www.linkedin.com/in/sara-prats-morales)
 * [GitHub](https://github.com/kuro-spm)
-
