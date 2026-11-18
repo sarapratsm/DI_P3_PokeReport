@@ -18,8 +18,6 @@ Desenvolupat com a part de l'assignatura de **Desenvolupament d'Interfícies**, 
 
 L'aplicació es connecta a una base de dades MySQL per obtenir informació detallada (estadístiques base, tipus, noms), descarrega els actius gràfics oficials i compila un informe paginat i professional.
 
-### 🖼️ Previsualització
-*(Pots afegir aquí una captura de pantalla de la teva aplicació o del PDF generat)*
 
 ---
 
@@ -43,7 +41,7 @@ L'aplicació es connecta a una base de dades MySQL per obtenir informació detal
 
 | Tecnologia | Ús |
 | :--- | :--- |
-| **C# (.NET 6.0)** | Llenguatge principal i lògica de negoci. |
+| **C# (.NET 8.0)** | Llenguatge principal i lògica de negoci. |
 | **WPF** | Interfície d'usuari (XAML). |
 | **QuestPDF** | Motor de generació de PDF (Codi obert). |
 | **Entity Framework Core** | ORM per a l'accés a dades. |
