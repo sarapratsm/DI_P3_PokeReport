@@ -1,5 +1,8 @@
 # 🔴 PokeReport PDF Generator
 
+![CFGS DAM](https://img.shields.io/badge/CFGS-DAM-green)
+![DI](https://img.shields.io/badge/assignatura-DI-yellow)
+
 ![Estat](https://img.shields.io/badge/Estat-Completat-success?style=for-the-badge&logo=github)
 ![.NET](https://img.shields.io/badge/.NET-8.0-purple?style=for-the-badge&logo=dotnet)
 ![QuestPDF](https://img.shields.io/badge/Llibreria-QuestPDF-blue?style=for-the-badge)
