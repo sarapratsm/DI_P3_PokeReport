@@ -1,7 +1,7 @@
 # 🔴 PokeReport PDF Generator
 
-![CFGS DAM](https://img.shields.io/badge/CFGS-Desenvolupament%20d%27Aplicacions%20Multiplataforma%20%28DAM%29-green)
-![DI](https://img.shields.io/badge/assignatura-Disseny%20d%27Interf%C3%ADcies-yellow)
+![CFGS DAM](https://img.shields.io/badge/CFGS-Desenvolupament%20d%27Aplicacions%20Multiplataforma%20%28DAM%29-green?style=for-the-badge)
+![DI](https://img.shields.io/badge/assignatura-Disseny%20d%27Interf%C3%ADcies-yellow?style=for-the-badge)
 
 ![Estat](https://img.shields.io/badge/Estat-Completat-success?style=for-the-badge&logo=github)
 ![.NET](https://img.shields.io/badge/.NET-8.0-purple?style=for-the-badge&logo=dotnet)
